@@ -12,4 +12,5 @@ exports.sendToCliostats = require(dir + 'sendToCliostats')
 exports.getBaseOptions = require(dir + 'getOptions').getBaseOptions
 exports.getOptions = require(dir + 'getOptions').getOptions
 exports.handleInput = require(dir + 'handleInput')
+exports.parseJunitTest = require(dir + 'parseJunitTest').verifyFile
 exports.logger = require(dir + 'logger')

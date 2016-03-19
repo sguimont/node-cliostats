@@ -12,7 +12,7 @@ describe('handleInput', function () {
     sinon.stub(index, 'getOptions', function (cb) {
       return cb('some error', {})
     })
-    var path = __dirname + '/../fixtures/onefile.lcov'
+    var path = __dirname + '/../fixtures/lcov/onefile.lcov'
     var input = fs.readFileSync(path, 'utf8')
     index.handleInput(input, function (err) {
       err.should.equal('some error')
@@ -27,7 +27,7 @@ describe('handleInput', function () {
     sinon.stub(index, 'convertLcovToCliostats', function (input, options, cb) {
       cb('some error')
     })
-    var path = __dirname + '/../fixtures/onefile.lcov'
+    var path = __dirname + '/../fixtures/lcov/onefile.lcov'
     var input = fs.readFileSync(path, 'utf8')
     index.handleInput(input, function (err) {
       err.should.equal('some error')
@@ -42,7 +42,7 @@ describe('handleInput', function () {
     sinon.stub(index, 'sendToCliostats', function (postData, cb) {
       cb('some error')
     })
-    var path = __dirname + '/../fixtures/onefile.lcov'
+    var path = __dirname + '/../fixtures/lcov/onefile.lcov'
     var input = fs.readFileSync(path, 'utf8')
     index.handleInput(input, function (err) {
       err.should.equal('some error')
@@ -57,7 +57,7 @@ describe('handleInput', function () {
     sinon.stub(index, 'sendToCliostats', function (postData, cb) {
       cb(null, { statusCode: 500 }, 'body')
     })
-    var path = __dirname + '/../fixtures/onefile.lcov'
+    var path = __dirname + '/../fixtures/lcov/onefile.lcov'
     var input = fs.readFileSync(path, 'utf8')
     index.handleInput(input, function (err) {
       err.should.equal('Bad response: 500 body')
@@ -72,7 +72,7 @@ describe('handleInput', function () {
     sinon.stub(index, 'sendToCliostats', function (postData, cb) {
       cb(null, { statusCode: 200 }, 'body')
     })
-    var path = __dirname + '/../fixtures/onefile.lcov'
+    var path = __dirname + '/../fixtures/lcov/onefile.lcov'
     var input = fs.readFileSync(path, 'utf8')
     index.handleInput(input, function (err) {
       (err === null).should.equal(true)

@@ -8,15 +8,13 @@ describe('convertLcovToCliostats', function () {
 
   it('should convert a simple lcov file', function (done) {
     process.env.TRAVIS_JOB_ID = -1
-    var lcovpath = __dirname + '/../fixtures/onefile.lcov'
+    var lcovpath = __dirname + '/../fixtures/lcov/onefile.lcov'
     var input = fs.readFileSync(lcovpath, 'utf8')
     var libpath = __dirname + '/../fixtures/lib'
     convertLcovToCliostats(input, { filepath: libpath }, function (err, output) {
       should.not.exist(err)
-      output.source_files[ 0 ].name.should.equal('index.js')
-      output.source_files[ 0 ].source.split('\n').length.should.equal(171)
-      output.source_files[ 0 ].coverage[ 54 ].should.equal(0)
-      output.source_files[ 0 ].coverage[ 60 ].should.equal(0)
+      output.coverage_line_percent.should.equal(0)
+      output.coverage_branch_percent.should.equal(0)
       done()
     })
   })
@@ -32,7 +30,7 @@ describe('convertLcovToCliostats', function () {
     process.env.CLIOSTATS_PARALLEL = 'true'
 
     getOptions(function (err, options) {
-      var lcovpath = __dirname + '/../fixtures/onefile.lcov'
+      var lcovpath = __dirname + '/../fixtures/lcov/onefile.lcov'
       var input = fs.readFileSync(lcovpath, 'utf8')
 
       options.filepath = 'fixtures/lib'
@@ -43,44 +41,6 @@ describe('convertLcovToCliostats', function () {
         //output.git.should.equal('GIT_HASH')
         done()
       })
-    })
-  })
-
-  it('should work with a relative path as well', function (done) {
-    process.env.TRAVIS_JOB_ID = -1
-    var lcovpath = __dirname + '/../fixtures/onefile.lcov'
-    var input = fs.readFileSync(lcovpath, 'utf8')
-    var libpath = 'fixtures/lib'
-    convertLcovToCliostats(input, { filepath: libpath }, function (err, output) {
-      should.not.exist(err)
-      output.source_files[ 0 ].name.should.equal('index.js')
-      output.source_files[ 0 ].source.split('\n').length.should.equal(171)
-      done()
-    })
-  })
-
-  it('should convert absolute input paths to relative', function (done) {
-    process.env.TRAVIS_JOB_ID = -1
-    var lcovpath = __dirname + '/../fixtures/istanbul.lcov'
-    var input = fs.readFileSync(lcovpath, 'utf8')
-    var libpath = '/Users/deepsweet/Dropbox/projects/svgo/lib'
-    var sourcepath = path.resolve(libpath, 'svgo/config.js')
-
-    var originalReadFileSync = fs.readFileSync
-    fs.readFileSync = function (filepath) {
-      if (filepath === sourcepath) {
-        return ''
-      }
-
-      return originalReadFileSync.apply(fs, arguments)
-    }
-
-    convertLcovToCliostats(input, { filepath: libpath }, function (err, output) {
-      fs.readFileSync = originalReadFileSync
-
-      should.not.exist(err)
-      output.source_files[ 0 ].name.should.equal(win32ToPosix(path.join('svgo', 'config.js')))
-      done()
     })
   })
 })
