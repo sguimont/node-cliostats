@@ -3,14 +3,14 @@ var minimist = require('minimist')
 // this needs to go before the other require()s so that the other files can already use index.options
 exports.options = minimist(process.argv.slice(2), {
   boolean: [ 'verbose', 'stdout' ],
+  string: [ 'lcov', 'junit' ],
   alias: { 'v': 'verbose', 's': 'stdout' }
 })
 
-var dir = './lib/'
-exports.convertLcovToCliostats = require(dir + 'convertLcovToCliostats')
-exports.sendToCliostats = require(dir + 'sendToCliostats')
-exports.getBaseOptions = require(dir + 'getOptions').getBaseOptions
-exports.getOptions = require(dir + 'getOptions').getOptions
-exports.handleInput = require(dir + 'handleInput')
-exports.parseJunitTest = require(dir + 'parseJunitTest').verifyFile
-exports.logger = require(dir + 'logger')
+exports.convertLcovToCliostats = require('./lib/convertLcovToCliostats')
+exports.sendToCliostats = require('./lib/sendToCliostats')
+exports.getBaseOptions = require('./lib/getOptions').getBaseOptions
+exports.getOptions = require('./lib/getOptions').getOptions
+exports.handleInput = require('./lib/handleInput')
+exports.parseJunitTest = require('./lib/parseJunitTest').parse
+exports.logger = require('./lib/logger')

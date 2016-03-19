@@ -1,5 +1,6 @@
-var junitXml = require('../../lib/parseJunitTest')
+var parseTest = require('../../lib/parseJunitTest')
 var path = require('path')
+var should = require('should');
 
 /**
  * @param {string} name A fixture name
@@ -11,44 +12,65 @@ function getFixturePath (name) {
 
 describe('parseJunitTest', function () {
   it('handles empty XML', function (done) {
-    junitXml.verifyFile(getFixturePath('empty'))
+    parseTest.parse(getFixturePath('empty'))
       .catch(function () { done() })
   })
 
-  it('handles test suites containing errors', function (done) {
-    junitXml.verifyFile(getFixturePath('error'))
-      .catch(Error, function () { done() })
+  it('handles test suites containing errors', function () {
+    return parseTest.parse(getFixturePath('error')).then(function (results) {
+      results.tests.should.eql(2)
+      results.failure.should.eql(1)
+      results.skipped.should.eql(0)
+    })
   })
 
-  it('handles test suites containing failures', function (done) {
-    junitXml.verifyFile(getFixturePath('failure'))
-      .catch(Error, function () { done() })
+  it('handles test suites containing failures', function () {
+    return parseTest.parse(getFixturePath('failure')).then(function (results) {
+      results.tests.should.eql(2)
+      results.failure.should.eql(1)
+      results.skipped.should.eql(0)
+    })
   })
 
   it('handles invalid attributes', function (done) {
-    junitXml.verifyFile(getFixturePath('invalid-attribute'))
+    parseTest.parse(getFixturePath('invalid-attribute'))
       .catch(function () { done() })
   })
 
   it('handles invalid XML', function (done) {
-    junitXml.verifyFile(getFixturePath('invalid'))
+    parseTest.parse(getFixturePath('invalid'))
       .catch(function () { done() })
   })
 
-  it('handles multiple test suites', function (done) {
-    junitXml.verifyFile(getFixturePath('multiple-success')).then(done)
+  it('handles multiple test suites', function () {
+    return parseTest.parse(getFixturePath('multiple-success')).then(function (results) {
+      results.tests.should.eql(2)
+      results.failure.should.eql(0)
+      results.skipped.should.eql(0)
+    })
   })
 
-  it('handles skipped test suites', function (done) {
-    junitXml.verifyFile(getFixturePath('skipped')).then(done)
+  it('handles skipped test suites', function () {
+    return parseTest.parse(getFixturePath('skipped')).then(function (results) {
+      results.tests.should.eql(69)
+      results.failure.should.eql(0)
+      results.skipped.should.eql(1)
+    })
   })
 
-  it('handles multiple test suites containing failures', function (done) {
-    junitXml.verifyFile(getFixturePath('multiple-failure'))
-      .catch(Error, function () { done() })
+  it('handles multiple test suites containing failures', function () {
+    return parseTest.parse(getFixturePath('multiple-failure')).then(function (results) {
+      results.tests.should.eql(2)
+      results.failure.should.eql(1)
+      results.skipped.should.eql(0)
+    })
   })
 
-  it('handles successful test suites', function (done) {
-    junitXml.verifyFile(getFixturePath('success')).then(done)
+  it('handles successful test suites', function () {
+    return parseTest.parse(getFixturePath('success')).then(function (results) {
+      results.tests.should.eql(2)
+      results.failure.should.eql(0)
+      results.skipped.should.eql(0)
+    })
   })
 })
