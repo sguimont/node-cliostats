@@ -200,8 +200,6 @@ describe('fetchGitData', function () {
       options.remotes.should.be.instanceof(Array)
       //options.remotes.length.should.be.above(0)
 
-      console.log(options)
-
       done()
     })
   })

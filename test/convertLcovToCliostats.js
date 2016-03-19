@@ -1,8 +1,8 @@
-const convertLcovToCliostats = require('../index').convertLcovToCliostats
-const getOptions = require('../index').getOptions
-const should = require('should')
-const fs = require('fs')
-const path = require('path')
+var convertLcovToCliostats = require('../index').convertLcovToCliostats
+var getOptions = require('../index').getOptions
+var should = require('should')
+var fs = require('fs')
+var path = require('path')
 
 describe('convertLcovToCliostats', function () {
 
@@ -15,6 +15,19 @@ describe('convertLcovToCliostats', function () {
       should.not.exist(err)
       output.coverage_line_percent.should.equal(0)
       output.coverage_branch_percent.should.equal(0)
+      done()
+    })
+  })
+
+  it('should convert a istanbul lcov file', function (done) {
+    process.env.TRAVIS_JOB_ID = -1
+    var lcovpath = __dirname + '/../fixtures/lcov/istanbul.lcov'
+    var input = fs.readFileSync(lcovpath, 'utf8')
+    var libpath = __dirname + '/../fixtures/lib'
+    convertLcovToCliostats(input, { filepath: libpath }, function (err, output) {
+      should.not.exist(err)
+      output.coverage_line_percent.should.equal(89.0625)
+      output.coverage_branch_percent.should.equal(67.5)
       done()
     })
   })

@@ -11,7 +11,7 @@
     "test-cov": "istanbul cover mocha test --reporter mocha-lcov-reporter --recursive",
     "standard": "standard"
   },
-  "author": "Sebastien Guimont",
+  "author": "Sebastien Guimont <info@sebastienguimont.com>",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.3.4",

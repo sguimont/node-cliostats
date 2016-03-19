@@ -1,5 +1,5 @@
-const junitXml = require('../../lib/parseJunitTest')
-const path = require('path')
+var junitXml = require('../../lib/parseJunitTest')
+var path = require('path')
 
 /**
  * @param {string} name A fixture name

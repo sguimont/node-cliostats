@@ -1,4 +1,4 @@
-const minimist = require('minimist')
+var minimist = require('minimist')
 
 // this needs to go before the other require()s so that the other files can already use index.options
 exports.options = minimist(process.argv.slice(2), {

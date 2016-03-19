@@ -1,7 +1,7 @@
-const should = require('should')
-const sinon = require('sinon-restore')
-const index = require('../index')
-const fs = require('fs')
+var should = require('should')
+var sinon = require('sinon-restore')
+var index = require('../index')
+var fs = require('fs')
 
 describe('handleInput', function () {
   afterEach(function () {
