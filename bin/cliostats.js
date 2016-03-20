@@ -3,7 +3,7 @@ var fs = require('fs')
 var Promise = require('bluebird')
 var index = require('../index')
 
-index.logger()
+theLogger = index.logger();
 
 if (!index.options.lcov && !index.options.junit) {
   throw new Error('Please provide a lcov file or a junit file or both')
@@ -98,7 +98,7 @@ statsOptions.then(function (theOptions) {
     }
 
     return new Promise(function (resolve, reject) {
-      index.logger.info('sending this to cliostats.io: ', JSON.stringify(postJson))
+      theLogger.info('sending this to cliostats.io: ', JSON.stringify(postJson))
 
       index.sendToCliostats(postJson, function (err, response, body) {
         if (err) {
@@ -109,8 +109,8 @@ statsOptions.then(function (theOptions) {
           return reject('Bad response: ' + response.statusCode + ' ' + body)
         }
 
-        index.logger.debug(response.statusCode)
-        index.logger.debug(body)
+        theLogger.debug(response.statusCode)
+        theLogger.debug(body)
 
         return resolve(body)
       })
